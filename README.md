@@ -1,76 +1,66 @@
-# hndaily - 海南日报全功能助手
+# hndaily - 海南日报 AI 技能
 
-一个 skill 完成：抓数据、列出全部标题、生成精简简报、合成语音 mp3、推送飞书。
+给 AI 智能体（OpenClaw）使用的海南日报助手技能。一条指令即可抓数据、生成简报、合成语音、推送飞书。
 
-## 目录结构
+---
+
+## 安装（复制到目标机器后执行）
+
+```bash
+# 克隆到 OpenClaw skills 目录
+git clone https://github.com/karry1155/hndaily-skill.git ~/.openclaw/skills/hndaily
+
+# 进入目录
+cd ~/.openclaw/skills/hndaily
+
+# 配置（复制模板 + 编辑）
+cp config.example.json config.json
+# 编辑 config.json，填入你的飞书 open_id 和 mmx 音色配置
+```
+
+## 配置项（config.json）
+
+| 字段 | 说明 | 示例 |
+|---|---|---|
+| `feishu_target` | 飞书用户 open_id | `user:ou_xxxxxxxx` |
+| `tts_voice` | mmx 语音音色名 | `my_voice_kai` |
+| `tts_model` | mmx 模型 | `speech-2.8-hd` |
+| `tts_region` | mmx 区域 | `cn` |
+
+## 使用方式
+
+在 OpenClaw 对话中触发即可：
+
+- "日报" / "今天日报" / "读报" → 全流程（抓数据+简报+语音+飞书）
+- "爬今天" / "hndaily" → 只抓数据
+- "列出全部标题" → 查看所有文章
+- "生成简报" → 生成 Markdown 简报
+- "日报转语音" → 合成 mp3
+- "把第 X 版 PDF 给我" → 下载 PDF
+
+## 文件说明
 
 ```
-hndaily-skill/
-├── skill/
-│   ├── SKILL.md          # 技能主文件
-│   ├── crawler.py        # 爬虫脚本
-│   ├── rules.md         # 简报生成规则
-│   ├── config.example.json  # 配置示例
-│   ├── migrate_data.sh  # 数据迁移脚本
-│   └── .gitignore       # Git 忽略规则
-└── README.md
+skill/
+├── SKILL.md           # 技能主文件（AI 读这个）
+├── crawler.py         # 爬虫脚本
+├── rules.md          # 简报生成规则
+├── config.example.json  # 配置模板
+├── migrate_data.sh   # 数据迁移脚本（换机器时用）
+└── .gitignore        # 忽略 config.json 和 _data/
 ```
 
-## 快速开始
+## 数据产物
 
-1. **克隆仓库**
-   ```bash
-   git clone https://github.com/karry1155/hndaily-skill.git
-   cd hndaily-skill/skill
-   ```
-
-2. **复制配置文件**
-   ```bash
-   cp config.example.json config.json
-   ```
-
-3. **编辑 config.json**，填入你的飞书 open_id 等配置：
-   ```json
-   {
-     "feishu_target": "user:ou_xxx",
-     "tts_voice": "my_voice_kai",
-     "tts_model": "speech-2.8-hd",
-     "tts_region": "cn"
-   }
-   ```
-
-4. **运行**
-   ```bash
-   python3 crawler.py [YYYY-MM-DD] [--force]
-   ```
-
-## 功能一览
-
-| 功能 | 命令示例 |
-|---|---|
-| 爬取当天日报 | `python3 crawler.py` |
-| 爬取指定日期 | `python3 crawler.py 2026-05-01` |
-| 查看完整标题列表 | 读 JSON 里的所有文章标题 |
-| 生成简报 | 读取 JSON + rules.md 生成 |
-| 语音合成 | mmx speech synthesize ... |
-| 推送飞书 | message 工具发送到用户 |
-
-## 配置说明
-
-- `feishu_target`：飞书用户 open_id（格式 `user:ou_xxx`）
-- `tts_voice`：你的 mmx 语音音色名
-- `tts_model`：mmx 模型名，默认 speech-2.8-hd
-- `tts_region`：mmx 区域，默认 cn
-
-## 数据目录
-
-运行时会自动创建 `_data/` 目录存放：
+运行时自动创建 `_data/` 目录（已 gitignore，不会推送）：
 - `{date}.json` - 原始版面数据
-- `{date}.brief.md` - 简报
+- `{date}.brief.md` - Markdown 简报
 - `{date}.mp3` - 语音文件
 
-**注意**：不要把 config.json 和 _data/ 目录提交到 Git！已通过 .gitignore 忽略。
+## 换机器迁移
 
-## License
+把整个 `hndaily/` 文件夹复制过去即可，包括 `_data/`（历史数据）。
 
-MIT
+---
+
+如需修改技能行为，编辑 `SKILL.md` 或 `crawler.py` 后 push 即可。
