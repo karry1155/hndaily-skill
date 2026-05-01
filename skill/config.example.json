@@ -1,0 +1,15 @@
+{
+  "_comment": "复制本文件为 config.json 后填上你自己的值。config.json 不进 git/不打包，每台机器各自配。",
+
+  "feishu_target": "user:ou_REPLACE_WITH_YOUR_OPEN_ID",
+  "_feishu_target_help": "格式：user:<飞书 open_id>。在飞书开放平台拿 open_id 或 union_id。私信只发给本人就填自己的。",
+
+  "tts_voice": "my_voice_kai",
+  "_tts_voice_help": "mmx speech synthesize --voice 用的音色。my_voice_kai 是一个克隆音色，换音色就改这个。",
+
+  "tts_model": "speech-2.8-hd",
+  "_tts_model_help": "mmx 模型名。",
+
+  "tts_region": "cn",
+  "_tts_region_help": "mmx region。"
+}
